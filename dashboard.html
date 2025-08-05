@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拼好拼 - 业务数据看板</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <!-- ECharts 图表库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 动态背景 -->
+    <div class="background-animation">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="dashboard-container">
+        <!-- 顶部导航栏 -->
+        <header class="dashboard-header glass-card">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <span>拼好拼数据看板</span>
+                </div>
+                <div class="real-time-indicator">
+                    <div class="pulse-dot"></div>
+                    <span>实时数据</span>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="time-filter">
+                    <select id="timeRange" class="glass-select">
+                        <option value="realtime">实时</option>
+                        <option value="today">今日</option>
+                        <option value="week">本周</option>
+                        <option value="month" selected>本月</option>
+                        <option value="quarter">本季度</option>
+                        <option value="year">本年</option>
+                    </select>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="refresh-control">
+                    <button class="glass-button" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        刷新
+                    </button>
+                </div>
+                <div class="user-info">
+                    <div class="avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span>管理员</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main class="dashboard-main">
+            <!-- 左侧筛选面板 -->
+            <aside class="filter-panel glass-card">
+                <div class="panel-header">
+                    <h3><i class="fas fa-filter"></i> 数据筛选</h3>
+                    <button class="collapse-btn" id="collapseFilter">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                
+                <div class="filter-content">
+                    <!-- 地域筛选 -->
+                    <div class="filter-group">
+                        <h4><i class="fas fa-map-marker-alt"></i> 地域筛选</h4>
+                        <div class="region-filter">
+                            <select id="provinceSelect" class="glass-select">
+                                <option value="">全国</option>
+                                <option value="sichuan">四川省</option>
+                                <option value="guangdong">广东省</option>
+                                <option value="beijing">北京市</option>
+                                <option value="shanghai">上海市</option>
+                            </select>
+                            <select id="citySelect" class="glass-select" disabled>
+                                <option value="">选择城市</option>
+                            </select>
+                            <select id="districtSelect" class="glass-select" disabled>
+                                <option value="">选择区县</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 角色筛选 -->
+                    <div class="filter-group">
+                        <h4><i class="fas fa-users"></i> 角色筛选</h4>
+                        <div class="role-filter">
+                            <label class="checkbox-label">
+                                <input type="checkbox" value="partners" checked>
+                                <span class="checkmark"></span>
+                                合伙人
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" value="business" checked>
+                                <span class="checkmark"></span>
+                                商务
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" value="stores" checked>
+                                <span class="checkmark"></span>
+                                商户
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" value="users" checked>
+                                <span class="checkmark"></span>
+                                用户
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 分红轮次筛选 -->
+                    <div class="filter-group">
+                        <h4><i class="fas fa-coins"></i> 分红轮次</h4>
+                        <div class="round-filter">
+                            <div class="round-range">
+                                <input type="range" id="roundRange" min="1" max="50" value="25" class="glass-range">
+                                <div class="range-labels">
+                                    <span>第1轮</span>
+                                    <span id="currentRound">第25轮</span>
+                                    <span>第50轮</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 右侧内容区域 -->
+            <div class="content-area">
+                <!-- KPI概览区域 -->
+                <section class="kpi-overview">
+                    <div class="kpi-grid">
+                        <div class="kpi-card glass-card" data-kpi="revenue">
+                            <div class="kpi-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">0</span>
+                                    <span class="unit">元</span>
+                                </div>
+                                <div class="kpi-label">总交易金额</div>
+                                <div class="kpi-trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+15.8%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card glass-card" data-kpi="stores">
+                            <div class="kpi-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">0</span>
+                                    <span class="unit">家</span>
+                                </div>
+                                <div class="kpi-label">活跃商户</div>
+                                <div class="kpi-trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+8.3%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card glass-card" data-kpi="users">
+                            <div class="kpi-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">0</span>
+                                    <span class="unit">人</span>
+                                </div>
+                                <div class="kpi-label">活跃用户</div>
+                                <div class="kpi-trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+23.7%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card glass-card" data-kpi="dividend">
+                            <div class="kpi-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">0</span>
+                                    <span class="unit">元</span>
+                                </div>
+                                <div class="kpi-label">分红池余额</div>
+                                <div class="kpi-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 73%"></div>
+                                    </div>
+                                    <span class="progress-text">距离下次分红 73%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 地图和图表区域 -->
+                <section class="visualization-section">
+                    <div class="viz-grid">
+                        <!-- 地图可视化 -->
+                        <div class="map-container glass-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-map"></i> 全国业务分布</h3>
+                                <div class="card-controls">
+                                    <button class="control-btn active" data-map-type="revenue">
+                                        <i class="fas fa-dollar-sign"></i> 收入
+                                    </button>
+                                    <button class="control-btn" data-map-type="stores">
+                                        <i class="fas fa-store"></i> 商户
+                                    </button>
+                                    <button class="control-btn" data-map-type="users">
+                                        <i class="fas fa-users"></i> 用户
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="map-chart" id="chinaMap"></div>
+                        </div>
+
+                        <!-- 分红轮次进度 -->
+                        <div class="dividend-progress glass-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-pie"></i> 分红轮次进度</h3>
+                            </div>
+                            <div class="dividend-content">
+                                <div class="current-round">
+                                    <div class="round-number">第 <span class="highlight">25</span> 轮</div>
+                                    <div class="round-status">进行中</div>
+                                </div>
+                                <div class="progress-circle">
+                                    <svg class="progress-ring" width="120" height="120">
+                                        <circle class="progress-ring-circle" stroke="#00d4ff" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+                                        <circle class="progress-ring-progress" stroke="#ff6b6b" stroke-width="8" fill="transparent" r="52" cx="60" cy="60" style="stroke-dasharray: 326.73; stroke-dashoffset: 88.22;"/>
+                                    </svg>
+                                    <div class="progress-text">73%</div>
+                                </div>
+                                <div class="dividend-info">
+                                    <div class="info-item">
+                                        <span class="label">预计分红时间</span>
+                                        <span class="value">2天后</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="label">预计分红金额</span>
+                                        <span class="value">¥680,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 图表分析区域 -->
+                <section class="charts-section">
+                    <div class="charts-grid">
+                        <!-- 收入趋势图 -->
+                        <div class="chart-container glass-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-line"></i> 收入趋势分析</h3>
+                                <div class="chart-controls">
+                                    <button class="control-btn active" data-period="7d">7天</button>
+                                    <button class="control-btn" data-period="30d">30天</button>
+                                    <button class="control-btn" data-period="90d">90天</button>
+                                </div>
+                            </div>
+                            <div class="chart" id="revenueChart"></div>
+                        </div>
+
+                        <!-- 角色分红分布 -->
+                        <div class="chart-container glass-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-pie"></i> 角色分红分布</h3>
+                            </div>
+                            <div class="chart" id="dividendChart"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 排行榜区域 -->
+                <section class="ranking-section">
+                    <div class="ranking-grid">
+                        <!-- 合伙人收益排行 -->
+                        <div class="ranking-card glass-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-trophy"></i> 合伙人收益排行</h3>
+                                <div class="ranking-controls">
+                                    <select class="glass-select small">
+                                        <option value="month">本月</option>
+                                        <option value="quarter">本季度</option>
+                                        <option value="year">本年</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ranking-list" id="partnerRanking">
+                                <!-- 排行榜内容将通过JavaScript动态生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 商户收益排行 -->
+                        <div class="ranking-card glass-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-medal"></i> 商户收益排行</h3>
+                                <div class="ranking-controls">
+                                    <select class="glass-select small">
+                                        <option value="month">本月</option>
+                                        <option value="quarter">本季度</option>
+                                        <option value="year">本年</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ranking-list" id="storeRanking">
+                                <!-- 排行榜内容将通过JavaScript动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript 内联版本 - 解决CORS问题 -->
+    <script>
+        console.log('开始初始化数据看板...');
+        
+        // 数据管理类
+        class DataManager {
+            constructor() {
+                this.mockData = {
+                    overview: {
+                        revenue: { value: 12580000, trend: '+15.8%' },
+                        stores: { value: 8642, trend: '+8.3%' },
+                        users: { value: 156789, trend: '+23.7%' },
+                        dividend: { value: 2516000, trend: '+12.5%' }
+                    },
+                    dividend: {
+                        currentRound: 25,
+                        progress: 73,
+                        estimatedTime: '2天后',
+                        estimatedAmount: 680000
+                    },
+                    rankings: {
+                        partners: [
+                            { name: '四川省5GP合伙人1', region: '四川省', count: 85, amount: 458000, change: 15.8 },
+                            { name: '广东省5GP合伙人1', region: '广东省', count: 92, amount: 423000, change: 12.3 },
+                            { name: '北京市5GP合伙人1', region: '北京市', count: 76, amount: 398000, change: 18.7 },
+                            { name: '上海市4GP合伙人1', region: '上海市', count: 68, amount: 365000, change: 9.2 },
+                            { name: '浙江省4GP合伙人2', region: '浙江省', count: 72, amount: 342000, change: 11.5 }
+                        ],
+                        stores: [
+                            { name: '老王餐厅', category: '餐饮', stores: 1, amount: 125000, change: 25.6 },
+                            { name: '小李超市', category: '零售', stores: 1, amount: 98000, change: 18.9 },
+                            { name: '阿华理发店', category: '服务', stores: 1, amount: 76000, change: 22.1 },
+                            { name: '美味咖啡厅', category: '餐饮', stores: 1, amount: 65000, change: 14.3 },
+                            { name: '时尚服装店', category: '零售', stores: 1, amount: 58000, change: 16.8 }
+                        ]
+                    }
+                };
+            }
+            
+            async getData() {
+                // 模拟API延迟
+                await new Promise(resolve => setTimeout(resolve, 500));
+                return this.mockData;
+            }
+        }
+        
+        // 动画管理类
+        class AnimationManager {
+            animateNumber(element, start, end, duration = 2000) {
+                if (!element) return;
+                
+                const startTime = performance.now();
+                const difference = end - start;
+                
+                const animate = (currentTime) => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easedProgress = this.easeOutCubic(progress);
+                    
+                    const currentValue = Math.floor(start + difference * easedProgress);
+                    element.textContent = this.formatNumber(currentValue);
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        element.textContent = this.formatNumber(end);
+                    }
+                };
+                
+                requestAnimationFrame(animate);
+            }
+            
+            formatNumber(num) {
+                if (num >= 10000) {
+                    return (num / 10000).toFixed(1) + 'w';
+                }
+                return num.toLocaleString();
+            }
+            
+            easeOutCubic(t) {
+                return (--t) * t * t + 1;
+            }
+        }
+        
+        // 图表管理类
+        class ChartManager {
+            constructor() {
+                this.charts = new Map();
+            }
+            
+            init() {
+                this.initChinaMap();
+                this.initRevenueChart();
+                this.initDividendChart();
+            }
+            
+            initChinaMap() {
+                const mapContainer = document.getElementById('chinaMap');
+                if (!mapContainer || !window.echarts) return;
+                
+                const chart = echarts.init(mapContainer);
+                
+                // 使用简化的饼图代替地图
+                const option = {
+                    backgroundColor: 'transparent',
+                    title: {
+                        text: '全国业务分布',
+                        left: 'center',
+                        textStyle: { color: '#ffffff', fontSize: 16 }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        borderColor: 'rgba(0, 212, 255, 0.5)',
+                        textStyle: { color: '#ffffff' }
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left',
+                        textStyle: { color: '#b8c5d6' }
+                    },
+                    series: [{
+                        name: '业务分布',
+                        type: 'pie',
+                        radius: ['30%', '70%'],
+                        center: ['60%', '50%'],
+                        data: [
+                            { value: 1048, name: '四川省' },
+                            { value: 735, name: '广东省' },
+                            { value: 580, name: '北京市' },
+                            { value: 484, name: '上海市' },
+                            { value: 300, name: '其他地区' }
+                        ],
+                        itemStyle: {
+                            borderRadius: 8,
+                            borderColor: 'rgba(0, 0, 0, 0.2)',
+                            borderWidth: 2
+                        },
+                        label: { color: '#ffffff' }
+                    }]
+                };
+                
+                chart.setOption(option);
+                this.charts.set('chinaMap', chart);
+            }
+            
+            initRevenueChart() {
+                const chartContainer = document.getElementById('revenueChart');
+                if (!chartContainer || !window.echarts) return;
+                
+                const chart = echarts.init(chartContainer);
+                
+                // 生成最近7天的数据
+                const dates = [];
+                const revenues = [];
+                for (let i = 6; i >= 0; i--) {
+                    const date = new Date();
+                    date.setDate(date.getDate() - i);
+                    dates.push(`${date.getMonth() + 1}/${date.getDate()}`);
+                    revenues.push(Math.floor(Math.random() * 100000) + 50000);
+                }
+                
+                const option = {
+                    backgroundColor: 'transparent',
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        borderColor: 'rgba(0, 212, 255, 0.5)',
+                        textStyle: { color: '#ffffff' }
+                    },
+                    grid: {
+                        left: '3%', right: '4%', bottom: '3%', containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: dates,
+                        axisLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.2)' } },
+                        axisLabel: { color: '#b8c5d6' }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.2)' } },
+                        axisLabel: { color: '#b8c5d6' },
+                        splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.05)' } }
+                    },
+                    series: [{
+                        name: '收入',
+                        type: 'line',
+                        smooth: true,
+                        data: revenues,
+                        lineStyle: { width: 3, color: '#667eea' },
+                        areaStyle: {
+                            color: {
+                                type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+                                colorStops: [
+                                    { offset: 0, color: 'rgba(102, 126, 234, 0.3)' },
+                                    { offset: 1, color: 'rgba(118, 75, 162, 0.1)' }
+                                ]
+                            }
+                        },
+                        symbol: 'circle',
+                        symbolSize: 6,
+                        itemStyle: { color: '#667eea', borderColor: '#ffffff', borderWidth: 2 }
+                    }]
+                };
+                
+                chart.setOption(option);
+                this.charts.set('revenueChart', chart);
+            }
+            
+            initDividendChart() {
+                const chartContainer = document.getElementById('dividendChart');
+                if (!chartContainer || !window.echarts) return;
+                
+                const chart = echarts.init(chartContainer);
+                
+                const option = {
+                    backgroundColor: 'transparent',
+                    tooltip: {
+                        trigger: 'item',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        borderColor: 'rgba(0, 212, 255, 0.5)',
+                        textStyle: { color: '#ffffff' },
+                        formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left',
+                        top: 'middle',
+                        textStyle: { color: '#b8c5d6' }
+                    },
+                    series: [{
+                        name: '分红分布',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['60%', '50%'],
+                        data: [
+                            { value: 40, name: '合伙人' },
+                            { value: 25, name: '商务' },
+                            { value: 20, name: '商户' },
+                            { value: 15, name: '用户' }
+                        ],
+                        itemStyle: {
+                            borderRadius: 10,
+                            borderColor: 'rgba(0, 0, 0, 0.2)',
+                            borderWidth: 2
+                        },
+                        label: { show: false }
+                    }]
+                };
+                
+                chart.setOption(option);
+                this.charts.set('dividendChart', chart);
+            }
+        }
+        
+        // 主应用类
+        class Dashboard {
+            constructor() {
+                this.dataManager = new DataManager();
+                this.animationManager = new AnimationManager();
+                this.chartManager = new ChartManager();
+                this.init();
+            }
+            
+            async init() {
+                try {
+                    console.log('初始化数据看板...');
+                    
+                    // 绑定事件监听器
+                    this.bindEventListeners();
+                    
+                    // 加载数据
+                    await this.loadData();
+                    
+                    // 初始化图表
+                    this.chartManager.init();
+                    
+                    console.log('数据看板初始化完成');
+                } catch (error) {
+                    console.error('初始化失败:', error);
+                }
+            }
+            
+            async loadData() {
+                try {
+                    const data = await this.dataManager.getData();
+                    
+                    // 更新KPI卡片
+                    this.updateKPICards(data.overview);
+                    
+                    // 更新分红进度
+                    this.updateDividendProgress(data.dividend);
+                    
+                    // 更新排行榜
+                    this.updateRankings(data.rankings);
+                    
+                } catch (error) {
+                    console.error('数据加载失败:', error);
+                }
+            }
+            
+            updateKPICards(overview) {
+                const kpiCards = document.querySelectorAll('.kpi-card');
+                
+                kpiCards.forEach(card => {
+                    const kpiType = card.dataset.kpi;
+                    const numberElement = card.querySelector('.number');
+                    const trendElement = card.querySelector('.kpi-trend span');
+                    
+                    if (numberElement && overview[kpiType]) {
+                        const targetValue = overview[kpiType].value;
+                        
+                        // 使用动画显示数字
+                        this.animationManager.animateNumber(numberElement, 0, targetValue);
+                        
+                        // 更新趋势
+                        if (trendElement && overview[kpiType].trend) {
+                            trendElement.textContent = overview[kpiType].trend;
+                        }
+                    }
+                });
+            }
+            
+            updateDividendProgress(dividend) {
+                // 更新当前轮次
+                const roundNumber = document.querySelector('.round-number .highlight');
+                if (roundNumber) {
+                    roundNumber.textContent = dividend.currentRound;
+                }
+                
+                // 更新进度环
+                const progressRing = document.querySelector('.progress-ring-progress');
+                const progressText = document.querySelector('.progress-circle .progress-text');
+                
+                if (progressRing && progressText) {
+                    const circumference = 2 * Math.PI * 52;
+                    const progress = dividend.progress / 100;
+                    const offset = circumference - (progress * circumference);
+                    
+                    progressRing.style.strokeDasharray = circumference;
+                    progressRing.style.strokeDashoffset = offset;
+                    progressText.textContent = `${dividend.progress}%`;
+                }
+                
+                // 更新分红信息
+                const infoItems = document.querySelectorAll('.dividend-info .info-item');
+                infoItems.forEach(item => {
+                    const label = item.querySelector('.label').textContent;
+                    const valueElement = item.querySelector('.value');
+                    
+                    if (label.includes('预计分红时间')) {
+                        valueElement.textContent = dividend.estimatedTime;
+                    } else if (label.includes('预计分红金额')) {
+                        valueElement.textContent = `¥${dividend.estimatedAmount.toLocaleString()}`;
+                    }
+                });
+            }
+            
+            updateRankings(rankings) {
+                this.updateRankingList('partnerRanking', rankings.partners);
+                this.updateRankingList('storeRanking', rankings.stores);
+            }
+            
+            updateRankingList(containerId, data) {
+                const container = document.getElementById(containerId);
+                if (!container || !data) return;
+                
+                container.innerHTML = '';
+                
+                data.forEach((item, index) => {
+                    const rankingItem = document.createElement('div');
+                    rankingItem.className = 'ranking-item';
+                    
+                    const rankClass = index < 3 ? `top-${index + 1}` : 'other';
+                    
+                    rankingItem.innerHTML = `
+                        <div class="ranking-number ${rankClass}">${index + 1}</div>
+                        <div class="ranking-info">
+                            <div class="ranking-name">${item.name}</div>
+                            <div class="ranking-details">
+                                <span>${item.region || item.category}</span>
+                                <span>${item.count || item.stores}个</span>
+                            </div>
+                        </div>
+                        <div class="ranking-value">
+                            <div class="ranking-amount">¥${item.amount.toLocaleString()}</div>
+                            <div class="ranking-change ${item.change >= 0 ? 'positive' : 'negative'}">
+                                <i class="fas fa-arrow-${item.change >= 0 ? 'up' : 'down'}"></i>
+                                ${Math.abs(item.change)}%
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(rankingItem);
+                });
+            }
+            
+            bindEventListeners() {
+                // 刷新按钮
+                const refreshBtn = document.getElementById('refreshBtn');
+                if (refreshBtn) {
+                    refreshBtn.addEventListener('click', () => {
+                        this.loadData();
+                    });
+                }
+                
+                // 筛选面板折叠
+                const collapseBtn = document.getElementById('collapseFilter');
+                const filterPanel = document.querySelector('.filter-panel');
+                
+                if (collapseBtn && filterPanel) {
+                    collapseBtn.addEventListener('click', () => {
+                        filterPanel.classList.toggle('collapsed');
+                        const icon = collapseBtn.querySelector('i');
+                        if (icon) {
+                            icon.classList.toggle('fa-chevron-left');
+                            icon.classList.toggle('fa-chevron-right');
+                        }
+                    });
+                }
+                
+                // 地图控制按钮
+                const mapControls = document.querySelectorAll('[data-map-type]');
+                mapControls.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        mapControls.forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                    });
+                });
+                
+                // 图表控制按钮
+                const chartControls = document.querySelectorAll('[data-period]');
+                chartControls.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const container = e.target.closest('.chart-container');
+                        const controls = container.querySelectorAll('[data-period]');
+                        
+                        controls.forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                    });
+                });
+            }
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM加载完成，开始初始化...');
+            window.dashboard = new Dashboard();
+        });
+    </script>
+</body>
+</html>

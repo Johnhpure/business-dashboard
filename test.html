@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据看板测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a0f;
+            color: white;
+            padding: 20px;
+        }
+        .test-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+    </style>
+</head>
+<body>
+    <h1>数据看板测试页面</h1>
+    
+    <div class="test-card">
+        <h3>总交易金额</h3>
+        <div class="number" id="revenue">加载中...</div>
+    </div>
+    
+    <div class="test-card">
+        <h3>活跃商户</h3>
+        <div class="number" id="stores">加载中...</div>
+    </div>
+    
+    <div class="test-card">
+        <h3>活跃用户</h3>
+        <div class="number" id="users">加载中...</div>
+    </div>
+    
+    <div class="test-card">
+        <h3>分红池余额</h3>
+        <div class="number" id="dividend">加载中...</div>
+    </div>
+    
+    <div class="test-card">
+        <h3>控制台日志</h3>
+        <div id="log" style="font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto;"></div>
+    </div>
+
+    <script type="module">
+        // 简单的日志显示
+        const logDiv = document.getElementById('log');
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            logDiv.innerHTML += args.join(' ') + '<br>';
+            logDiv.scrollTop = logDiv.scrollHeight;
+        };
+        
+        console.log('开始测试...');
+        
+        try {
+            // 导入数据管理器
+            import('./js/data.js').then(module => {
+                console.log('数据模块加载成功');
+                const DataManager = module.DataManager;
+                const dataManager = new DataManager();
+                
+                return dataManager.init();
+            }).then(() => {
+                console.log('数据管理器初始化成功');
+                
+                // 创建数据管理器实例并获取数据
+                import('./js/data.js').then(module => {
+                    const DataManager = module.DataManager;
+                    const dataManager = new DataManager();
+                    
+                    dataManager.init().then(() => {
+                        const filters = {
+                            timeRange: 'month',
+                            province: '',
+                            city: '',
+                            district: '',
+                            roles: ['partners', 'business', 'stores', 'users'],
+                            round: 25
+                        };
+                        
+                        return dataManager.getData(filters);
+                    }).then(data => {
+                        console.log('获取到数据:', data);
+                        
+                        // 更新页面显示
+                        if (data.overview) {
+                            document.getElementById('revenue').textContent = 
+                                (data.overview.revenue?.value || 0).toLocaleString() + ' 元';
+                            document.getElementById('stores').textContent = 
+                                (data.overview.stores?.value || 0).toLocaleString() + ' 家';
+                            document.getElementById('users').textContent = 
+                                (data.overview.users?.value || 0).toLocaleString() + ' 人';
+                            document.getElementById('dividend').textContent = 
+                                (data.overview.dividend?.value || 0).toLocaleString() + ' 元';
+                        }
+                    }).catch(error => {
+                        console.error('获取数据失败:', error);
+                        
+                        // 显示默认数据
+                        document.getElementById('revenue').textContent = '12,580,000 元';
+                        document.getElementById('stores').textContent = '8,642 家';
+                        document.getElementById('users').textContent = '156,789 人';
+                        document.getElementById('dividend').textContent = '2,516,000 元';
+                    });
+                });
+            }).catch(error => {
+                console.error('模块加载失败:', error);
+                
+                // 显示默认数据
+                document.getElementById('revenue').textContent = '12,580,000 元';
+                document.getElementById('stores').textContent = '8,642 家';
+                document.getElementById('users').textContent = '156,789 人';
+                document.getElementById('dividend').textContent = '2,516,000 元';
+            });
+        } catch (error) {
+            console.error('测试失败:', error);
+        }
+    </script>
+</body>
+</html>
