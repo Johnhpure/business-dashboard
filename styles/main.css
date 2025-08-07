@@ -210,7 +210,10 @@ body {
 .header-center {
   flex: 1;
   display: flex;
+  align-items: center;
   justify-content: center;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
 }
 
 .header-right {
@@ -323,12 +326,76 @@ body {
   gap: var(--spacing-sm);
 }
 
-/* 右侧内容区域 */
+/* 内容区域 (移除左侧面板后的全宽布局) */
 .content-area {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xl);
+}
+
+.content-area.full-width {
+  width: 100%;
+}
+
+/* 标题栏筛选项样式 */
+.region-filter-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+
+
+/* 分红轮次展示样式 */
+.round-display-header {
+  display: flex;
+  align-items: center;
+}
+
+.round-info-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: 0;
+  min-width: auto;
+}
+
+.round-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.round-label-secondary {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  margin-right: var(--spacing-xs);
+}
+
+.round-number-display {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.round-current {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-family: var(--font-mono);
+}
+
+.round-status-badge {
+  font-size: 0.625rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--success-color);
+  color: white;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* KPI概览区域 */
@@ -377,6 +444,10 @@ body {
 
 .kpi-card[data-kpi="users"]::before {
   background: var(--gradient-warning);
+}
+
+.kpi-card[data-kpi="business"]::before {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
 }
 
 .kpi-card[data-kpi="dividend"]::before {
@@ -430,6 +501,7 @@ body {
   gap: var(--spacing-xs);
   font-size: 0.75rem;
   font-weight: 500;
+  color: var(--text-secondary);
 }
 
 .kpi-trend.positive {
@@ -438,6 +510,16 @@ body {
 
 .kpi-trend.negative {
   color: var(--error-color);
+}
+
+.trend-value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--success-color);
+}
+
+.trend-unit {
+  color: var(--text-secondary);
 }
 
 .kpi-progress {
@@ -460,9 +542,47 @@ body {
   transition: width var(--transition-slow) ease;
 }
 
+.progress-text-container {
+  width: 100%;
+  margin-top: var(--spacing-xs);
+  position: relative;
+  height: 1.8rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .progress-text {
   font-size: 0.75rem;
   color: var(--text-secondary);
+  white-space: nowrap;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.progress-text span {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.progress-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.progress-info .progress-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-info .progress-text span {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 /* 可视化区域 */
@@ -474,11 +594,136 @@ body {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: var(--spacing-lg);
+  align-items: start;
+}
+
+/* 右侧分红卡片容器 */
+.viz-grid > .dividend-details:first-of-type,
+.viz-grid > .dividend-history {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 右侧卡片区域容器 */
+.dividend-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  height: 100%;
 }
 
 .map-container {
-  padding: var(--spacing-xl);
-  min-height: 400px;
+  padding: var(--spacing-lg);
+  min-height: 500px; /* 调整卡片高度 */
+}
+
+/* 全国业绩流水概览布局 */
+.national-overview-content {
+  display: flex;
+  gap: var(--spacing-lg);
+  height: 500px; /* 调整内容区域高度 */
+}
+
+.provinces-list {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.provinces-list h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.provinces-summary {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  overflow: visible;
+  padding-right: var(--spacing-xs);
+  height: auto;
+  max-height: none;
+  position: relative;
+}
+
+.provinces-summary::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    var(--glass-border) 10%,
+    var(--glass-border) 90%,
+    transparent 100%);
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.provinces-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-xs);
+  overflow-y: auto;
+  padding-right: var(--spacing-xs);
+}
+
+.provinces-summary::-webkit-scrollbar,
+.provinces-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.provinces-summary,
+.provinces-grid {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.province-item {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid transparent;
+  transition: all var(--transition-fast) ease;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.province-item:hover {
+  background: rgba(0, 212, 255, 0.1);
+  border-left-color: var(--primary-color);
+  color: var(--text-primary);
+}
+
+.province-item.active {
+  background: rgba(0, 212, 255, 0.15);
+  border-left-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.province-value {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.overview-chart {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dividend-progress {
@@ -491,8 +736,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--spacing-lg);
-  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
   border-bottom: 1px solid var(--glass-border);
 }
 
@@ -500,7 +745,7 @@ body {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -510,7 +755,7 @@ body {
 }
 
 .map-chart {
-  height: 350px;
+  height: 250px;
   width: 100%;
 }
 
@@ -599,6 +844,118 @@ body {
   color: var(--text-primary);
 }
 
+/* 当前分红轮次详情 */
+.dividend-details {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 分红历史记录 */
+.dividend-history {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.dividend-history-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex: 1;
+}
+
+.dividend-details-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex: 1;
+}
+
+.round-info {
+  text-align: center;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.round-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+}
+
+.round-title .highlight {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+}
+
+.dividend-chart-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+}
+
+.dividend-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--glass-border);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) 0;
+  cursor: pointer;
+  transition: all var(--transition-fast) ease;
+  border-radius: var(--radius-sm);
+  margin: 0 calc(-1 * var(--spacing-xs));
+  padding-left: var(--spacing-xs);
+  padding-right: var(--spacing-xs);
+}
+
+.summary-item:hover {
+  background: rgba(0, 212, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.summary-item.active {
+  background: rgba(0, 212, 255, 0.15);
+  color: var(--primary-color);
+}
+
+.summary-item .label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.summary-item .value {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  margin-left: var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+.summary-item:hover .label,
+.summary-item:hover .value {
+  color: var(--text-primary);
+}
+
+.summary-item.active .label,
+.summary-item.active .value {
+  color: var(--primary-color);
+}
+
 /* 图表区域 */
 .charts-section {
   margin-bottom: var(--spacing-xl);
@@ -606,7 +963,7 @@ body {
 
 .charts-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
   gap: var(--spacing-lg);
 }
 
@@ -659,16 +1016,30 @@ body {
   .ranking-grid {
     grid-template-columns: 1fr;
   }
+  
+  .national-overview-content {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .provinces-list {
+    width: 100%;
+    max-height: 150px;
+  }
+  
+  .provinces-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    max-height: 120px;
+  }
+  
+  .overview-chart {
+    height: 300px;
+  }
 }
 
 @media (max-width: 768px) {
   .dashboard-main {
     flex-direction: column;
-  }
-  
-  .filter-panel {
-    width: 100%;
-    position: static;
   }
   
   .kpi-grid {
@@ -679,11 +1050,81 @@ body {
     flex-direction: column;
     height: auto;
     gap: var(--spacing-md);
+    padding: var(--spacing-md);
   }
   
   .header-left,
   .header-right {
     width: 100%;
     justify-content: space-between;
+  }
+  
+  .header-center {
+    width: 100%;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  
+  .region-filter-header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    width: 100%;
+  }
+  
+  .region-filter-header select {
+    width: 100%;
+  }
+  
+
+  .round-display-header {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .round-info-card {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    text-align: center;
+  }
+  
+  .round-label {
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .glass-range-header {
+    flex: 1;
+    margin: 0 var(--spacing-sm);
+  }
+  
+  .national-overview-content {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .provinces-list {
+    width: 100%;
+    max-height: 120px;
+  }
+  
+  .provinces-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    max-height: 100px;
+  }
+  
+  .province-item {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+  }
+  
+  .province-value {
+    font-size: 0.65rem;
+  }
+  
+  .overview-chart {
+    height: 250px;
+  }
+  
+  .map-container {
+    min-height: 350px;
   }
 }
