@@ -153,9 +153,83 @@
                                     <div class="progress-bar">
                                         <div class="progress-fill" style="width: 73%"></div>
                                     </div>
-                                    <div class="progress-text-container">
-                                        <span class="progress-text">下一次分红倒计时：<span id="dividendCountdown">48H</span></span>
-                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 新增业务数据概览区域 -->
+                <section class="business-overview">
+                    <div class="business-grid">
+                        <div class="kpi-card glass-card" data-kpi="points-issued">
+                            <div class="kpi-icon">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">0</span>
+                                    <span class="unit">点</span>
+                                </div>
+                                <div class="kpi-label">消费点发放</div>
+                                <div class="kpi-trend positive">
+                                    <span>今日发放：</span>
+                                    <span class="trend-value">125,680</span>
+                                    <span class="trend-unit">点</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card glass-card" data-kpi="voucher-consumed">
+                            <div class="kpi-icon">
+                                <i class="fas fa-ticket-alt"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">0</span>
+                                    <span class="unit">元</span>
+                                </div>
+                                <div class="kpi-label">抵用券消费</div>
+                                <div class="kpi-trend positive">
+                                    <span>今日消费：</span>
+                                    <span class="trend-value">89,420</span>
+                                    <span class="trend-unit">元</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card glass-card" data-kpi="good-points-consumed">
+                            <div class="kpi-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">0</span>
+                                    <span class="unit">点</span>
+                                </div>
+                                <div class="kpi-label">好点消费</div>
+                                <div class="kpi-trend positive">
+                                    <span>今日消费：</span>
+                                    <span class="trend-value">67,890</span>
+                                    <span class="trend-unit">点</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card glass-card" data-kpi="voucher-withdrawal">
+                            <div class="kpi-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">0</span>
+                                    <span class="unit">元</span>
+                                </div>
+                                <div class="kpi-label">抵用券提现</div>
+                                <div class="kpi-trend positive">
+                                    <span>今日提现：</span>
+                                    <span class="trend-value">45,230</span>
+                                    <span class="trend-unit">元</span>
                                 </div>
                             </div>
                         </div>
@@ -193,47 +267,80 @@
                             </div>
                         </div>
 
-                        <!-- 当前分红轮次详情 -->
-                        <div class="dividend-details glass-card compact-card">
-                            <div class="card-header">
-                                <h3><i class="fas fa-coins"></i> 当前分红轮次详情</h3>
-                            </div>
-                            <div class="dividend-details-content">
-                                <div class="dividend-summary">
-                                    <div class="summary-item">
-                                        <span class="label">预计分红时间</span>
-                                        <span class="value">2天后</span>
-                                    </div>
-                                    <div class="summary-item">
-                                        <span class="label">预计分红金额</span>
-                                        <span class="value">¥680,000</span>
-                                    </div>
-                                    <div class="summary-item">
-                                        <span class="label">当前进度</span>
-                                        <span class="value">73%</span>
+                        <!-- 分红卡片容器 -->
+                        <div class="dividend-cards-container">
+                            <!-- 当前分红轮次详情 -->
+                            <div class="dividend-details glass-card compact-card">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-coins"></i> 第25次分红详情</h3>
+                                </div>
+                                <div class="dividend-details-content">
+                                    <div class="dividend-grid">
+                                        <div class="dividend-item">
+                                            <div class="dividend-icon store-icon">
+                                                <i class="fas fa-store"></i>
+                                            </div>
+                                            <div class="dividend-info">
+                                                <div class="dividend-label">商户分红</div>
+                                                <div class="dividend-value">¥136,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="dividend-item">
+                                            <div class="dividend-icon user-icon">
+                                                <i class="fas fa-users"></i>
+                                            </div>
+                                            <div class="dividend-info">
+                                                <div class="dividend-label">用户分红</div>
+                                                <div class="dividend-value">¥102,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="dividend-item total-item">
+                                            <div class="dividend-icon total-icon">
+                                                <i class="fas fa-calculator"></i>
+                                            </div>
+                                            <div class="dividend-info">
+                                                <div class="dividend-label">预估总额</div>
+                                                <div class="dividend-value highlight">¥680,000</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- 分红历史记录 -->
-                        <div class="dividend-history glass-card compact-card">
-                            <div class="card-header">
-                                <h3><i class="fas fa-history"></i> 分红历史记录</h3>
-                            </div>
-                            <div class="dividend-history-content">
-                                <div class="dividend-summary">
-                                    <div class="summary-item">
-                                        <span class="label">上次分红时间</span>
-                                        <span class="value">3天前</span>
-                                    </div>
-                                    <div class="summary-item">
-                                        <span class="label">上次分红金额</span>
-                                        <span class="value">¥650,000</span>
-                                    </div>
-                                    <div class="summary-item">
-                                        <span class="label">累计分红次数</span>
-                                        <span class="value">24次</span>
+                            <!-- 分红历史记录 -->
+                            <div class="dividend-history glass-card compact-card">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-history"></i> 第24轮分红详情</h3>
+                                </div>
+                                <div class="dividend-history-content">
+                                    <div class="dividend-grid">
+                                        <div class="dividend-item">
+                                            <div class="dividend-icon partner-icon">
+                                                <i class="fas fa-handshake"></i>
+                                            </div>
+                                            <div class="dividend-info">
+                                                <div class="dividend-label">合伙人分红</div>
+                                                <div class="dividend-value">¥272,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="dividend-item">
+                                            <div class="dividend-icon business-icon">
+                                                <i class="fas fa-user-tie"></i>
+                                            </div>
+                                            <div class="dividend-info">
+                                                <div class="dividend-label">商务分红</div>
+                                                <div class="dividend-value">¥170,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="dividend-item total-item">
+                                            <div class="dividend-icon total-icon">
+                                                <i class="fas fa-calculator"></i>
+                                            </div>
+                                            <div class="dividend-info">
+                                                <div class="dividend-label">预估总额</div>
+                                                <div class="dividend-value highlight">¥650,000</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -249,9 +356,9 @@
                             <div class="card-header">
                                 <h3><i class="fas fa-chart-line"></i> 收入趋势分析</h3>
                                 <div class="chart-controls">
-                                    <button class="control-btn active" data-period="7d">7天</button>
-                                    <button class="control-btn" data-period="30d">30天</button>
-                                    <button class="control-btn" data-period="90d">90天</button>
+                                    <button class="control-btn active" data-period="week">周</button>
+                                    <button class="control-btn" data-period="month">月</button>
+                                    <button class="control-btn" data-period="year">年</button>
                                 </div>
                             </div>
                             <div class="chart" id="revenueChart"></div>
@@ -264,23 +371,6 @@
                 <!-- 排行榜区域 -->
                 <section class="ranking-section">
                     <div class="ranking-grid">
-                        <!-- 合伙人收益排行 -->
-                        <div class="ranking-card glass-card">
-                            <div class="card-header">
-                                <h3><i class="fas fa-trophy"></i> 合伙人收益排行</h3>
-                                <div class="ranking-controls">
-                                    <select class="glass-select small">
-                                        <option value="month">本月</option>
-                                        <option value="quarter">本季度</option>
-                                        <option value="year">本年</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="ranking-list" id="partnerRanking">
-                                <!-- 排行榜内容将通过JavaScript动态生成 -->
-                            </div>
-                        </div>
-
                         <!-- 商户收益排行 -->
                         <div class="ranking-card glass-card">
                             <div class="card-header">
@@ -294,6 +384,23 @@
                                 </div>
                             </div>
                             <div class="ranking-list" id="storeRanking">
+                                <!-- 排行榜内容将通过JavaScript动态生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 商务进件排行榜 -->
+                        <div class="ranking-card glass-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-trophy"></i> 商务进件排行榜</h3>
+                                <div class="ranking-controls">
+                                    <select class="glass-select small">
+                                        <option value="month">本月</option>
+                                        <option value="quarter">本季度</option>
+                                        <option value="year">本年</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ranking-list" id="businessRanking">
                                 <!-- 排行榜内容将通过JavaScript动态生成 -->
                             </div>
                         </div>
@@ -318,6 +425,12 @@
                         business: { value: 2847, todayNew: { value: 89, unit: '人' } },
                         dividend: { value: 2516000, todayNew: { value: 312000, unit: '元' } }
                     },
+                    business: {
+                        pointsIssued: { value: 2856780, todayNew: { value: 125680, unit: '点' } },
+                        voucherConsumed: { value: 1456890, todayNew: { value: 89420, unit: '元' } },
+                        goodPointsConsumed: { value: 987650, todayNew: { value: 67890, unit: '点' } },
+                        voucherWithdrawal: { value: 756430, todayNew: { value: 45230, unit: '元' } }
+                    },
                     dividend: {
                         currentRound: 25,
                         progress: 73,
@@ -331,19 +444,29 @@
                         ]
                     },
                     rankings: {
-                        partners: [
-                            { name: '四川省5GP合伙人1', region: '四川省', count: 85, amount: 458000, change: 15.8 },
-                            { name: '广东省5GP合伙人1', region: '广东省', count: 92, amount: 423000, change: 12.3 },
-                            { name: '北京市5GP合伙人1', region: '北京市', count: 76, amount: 398000, change: 18.7 },
-                            { name: '上海市4GP合伙人1', region: '上海市', count: 68, amount: 365000, change: 9.2 },
-                            { name: '浙江省4GP合伙人2', region: '浙江省', count: 72, amount: 342000, change: 11.5 }
+                        business: [
+                            { name: '张伟', region: '四川省', count: 156, amount: 0, change: 18.5 },
+                            { name: '李明', region: '广东省', count: 142, amount: 0, change: 15.2 },
+                            { name: '王强', region: '北京市', count: 138, amount: 0, change: 22.1 },
+                            { name: '刘芳', region: '上海市', count: 125, amount: 0, change: 12.8 },
+                            { name: '陈杰', region: '浙江省', count: 118, amount: 0, change: 16.3 },
+                            { name: '赵敏', region: '江苏省', count: 112, amount: 0, change: 9.7 },
+                            { name: '孙丽', region: '山东省', count: 108, amount: 0, change: 14.6 },
+                            { name: '周涛', region: '河南省', count: 95, amount: 0, change: 11.2 },
+                            { name: '吴华', region: '湖北省', count: 89, amount: 0, change: 8.9 },
+                            { name: '郑磊', region: '福建省', count: 82, amount: 0, change: 13.4 }
                         ],
                         stores: [
-                            { name: '老王餐厅', category: '餐饮', stores: 1, amount: 125000, change: 25.6 },
-                            { name: '小李超市', category: '零售', stores: 1, amount: 98000, change: 18.9 },
-                            { name: '阿华理发店', category: '服务', stores: 1, amount: 76000, change: 22.1 },
-                            { name: '美味咖啡厅', category: '餐饮', stores: 1, amount: 65000, change: 14.3 },
-                            { name: '时尚服装店', category: '零售', stores: 1, amount: 58000, change: 16.8 }
+                            { name: '老王餐厅', location: '四川省-成都市', stores: 1, amount: 125000, change: 25.6 },
+                            { name: '小李超市', location: '广东省-深圳市', stores: 1, amount: 98000, change: 18.9 },
+                            { name: '阿华理发店', location: '北京市-朝阳区', stores: 1, amount: 76000, change: 22.1 },
+                            { name: '美味咖啡厅', location: '上海市-浦东新区', stores: 1, amount: 65000, change: 14.3 },
+                            { name: '时尚服装店', location: '浙江省-杭州市', stores: 1, amount: 58000, change: 16.8 },
+                            { name: '新华书店', location: '江苏省-南京市', stores: 1, amount: 52000, change: 19.2 },
+                            { name: '健身中心', location: '山东省-青岛市', stores: 1, amount: 48000, change: 21.7 },
+                            { name: '药店连锁', location: '河南省-郑州市', stores: 1, amount: 45000, change: 13.8 },
+                            { name: '汽车维修', location: '湖北省-武汉市', stores: 1, amount: 42000, change: 17.5 },
+                            { name: '便利店', location: '福建省-厦门市', stores: 1, amount: 38000, change: 15.3 }
                         ]
                     }
                 };
@@ -467,7 +590,7 @@
                     series: [{
                         name: '全国业绩流水',
                         type: 'pie',
-                        radius: ['5%', '95%'], // 进一步放大饼图
+                        radius: ['10%', '85%'], // 调整饼图大小以适应容器
                         center: ['50%', '50%'],
                         data: topTenProvinceData,
                         itemStyle: {
@@ -489,17 +612,17 @@
                                 }
                             },
                             color: '#ffffff',
-                            fontSize: 14, // 进一步增大字体
-                            fontWeight: 700, // 更加粗字体
-                            distanceToLabelLine: 10 // 增加标签与线的距离
+                            fontSize: 12, // 适中的字体大小
+                            fontWeight: 600, // 适中的字体粗细
+                            distanceToLabelLine: 8 // 适中的标签距离
                         },
                         labelLine: {
                             show: true,
-                            length: 40, // 进一步增加第一段线长度
-                            length2: 20, // 进一步增加第二段线长度
+                            length: 25, // 适中的第一段线长度
+                            length2: 15, // 适中的第二段线长度
                             lineStyle: {
-                                color: 'rgba(255, 255, 255, 0.8)', // 增加透明度
-                                width: 2 // 增加线条粗细
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                width: 1.5
                             }
                         },
                         emphasis: {
@@ -674,6 +797,9 @@
 
                     // 更新KPI卡片
                     this.updateKPICards(data.overview);
+                    
+                    // 更新业务数据卡片
+                    this.updateBusinessCards(data.business);
 
                     // 更新分红轮次详情
                     this.updateDividendDetails(data.dividend);
@@ -714,6 +840,51 @@
                 });
             }
 
+            updateBusinessCards(business) {
+                const businessCards = document.querySelectorAll('.business-grid .kpi-card');
+
+                businessCards.forEach(card => {
+                    const kpiType = card.dataset.kpi;
+                    const numberElement = card.querySelector('.number');
+                    const trendValueElement = card.querySelector('.trend-value');
+                    const trendUnitElement = card.querySelector('.trend-unit');
+
+                    // 映射数据键名
+                    let dataKey = '';
+                    switch (kpiType) {
+                        case 'points-issued':
+                            dataKey = 'pointsIssued';
+                            break;
+                        case 'voucher-consumed':
+                            dataKey = 'voucherConsumed';
+                            break;
+                        case 'good-points-consumed':
+                            dataKey = 'goodPointsConsumed';
+                            break;
+                        case 'voucher-withdrawal':
+                            dataKey = 'voucherWithdrawal';
+                            break;
+                    }
+
+                    if (numberElement && business[dataKey]) {
+                        const targetValue = business[dataKey].value;
+
+                        // 使用动画显示数字
+                        this.animationManager.animateNumber(numberElement, 0, targetValue);
+
+                        // 更新今日新增数据
+                        if (trendValueElement && business[dataKey].todayNew) {
+                            const todayNewValue = business[dataKey].todayNew.value;
+                            this.animationManager.animateNumber(trendValueElement, 0, todayNewValue);
+                        }
+
+                        if (trendUnitElement && business[dataKey].todayNew) {
+                            trendUnitElement.textContent = business[dataKey].todayNew.unit;
+                        }
+                    }
+                });
+            }
+
             updateDividendDetails(dividend) {
                 // 更新分红摘要信息
                 const summaryItems = document.querySelectorAll('.dividend-summary .summary-item');
@@ -732,8 +903,8 @@
             }
 
             updateRankings(rankings) {
-                this.updateRankingList('partnerRanking', rankings.partners);
                 this.updateRankingList('storeRanking', rankings.stores);
+                this.updateRankingList('businessRanking', rankings.business);
             }
 
             updateRankingList(containerId, data) {
@@ -748,23 +919,38 @@
 
                     const rankClass = index < 3 ? `top-${index + 1}` : 'other';
 
-                    rankingItem.innerHTML = `
-                        <div class="ranking-number ${rankClass}">${index + 1}</div>
-                        <div class="ranking-info">
-                            <div class="ranking-name">${item.name}</div>
-                            <div class="ranking-details">
-                                <span>${item.region || item.category}</span>
-                                <span>${item.count || item.stores}个</span>
+                    // 判断是商务进件排行榜还是商户收益排行榜
+                    const isBusinessRanking = containerId === 'businessRanking';
+                    
+                    if (isBusinessRanking) {
+                        // 商务进件排行榜：只显示姓名和省份，右侧显示进件数量
+                        rankingItem.innerHTML = `
+                            <div class="ranking-number ${rankClass}">${index + 1}</div>
+                            <div class="ranking-info">
+                                <div class="ranking-name">${item.name}</div>
+                                <div class="ranking-details">
+                                    <span>${item.region}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="ranking-value">
-                            <div class="ranking-amount">¥${item.amount.toLocaleString()}</div>
-                            <div class="ranking-change ${item.change >= 0 ? 'positive' : 'negative'}">
-                                <i class="fas fa-arrow-${item.change >= 0 ? 'up' : 'down'}"></i>
-                                ${Math.abs(item.change)}%
+                            <div class="ranking-value">
+                                <div class="ranking-amount">${item.count}件</div>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        // 商户收益排行榜：显示商户名称和省份-城市，右侧只显示金额
+                        rankingItem.innerHTML = `
+                            <div class="ranking-number ${rankClass}">${index + 1}</div>
+                            <div class="ranking-info">
+                                <div class="ranking-name">${item.name}</div>
+                                <div class="ranking-details">
+                                    <span>${item.location}</span>
+                                </div>
+                            </div>
+                            <div class="ranking-value">
+                                <div class="ranking-amount">¥${item.amount.toLocaleString()}</div>
+                            </div>
+                        `;
+                    }
 
                     container.appendChild(rankingItem);
                 });
@@ -845,10 +1031,24 @@
                     btn.addEventListener('click', (e) => {
                         const container = e.target.closest('.chart-container');
                         const controls = container.querySelectorAll('[data-period]');
+                        const period = e.target.getAttribute('data-period');
 
                         controls.forEach(b => b.classList.remove('active'));
                         e.target.classList.add('active');
+                        
+                        // 更新图表数据
+                        const chartId = container.querySelector('.chart').id;
+                        if (this.chartManager && chartId) {
+                            this.chartManager.updateChartPeriod(chartId, period);
+                        }
                     });
+                });
+            }
+
+            handleResize() {
+                // 调整所有图表大小
+                this.charts.forEach(chart => {
+                    chart.resize();
                 });
             }
         }
@@ -857,6 +1057,13 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM加载完成，开始初始化...');
             window.dashboard = new Dashboard();
+            
+            // 添加窗口resize事件监听
+            window.addEventListener('resize', () => {
+                if (window.dashboard) {
+                    window.dashboard.handleResize();
+                }
+            });
         });
     </script>
 </body>

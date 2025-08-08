@@ -264,6 +264,21 @@ export class ChartManager {
                 textStyle: {
                     color: '#ffffff'
                 },
+                formatter: function(params) {
+                    let result = `<div style="padding: 8px;">`;
+                    result += `<div style="font-weight: bold; margin-bottom: 4px;">${params[0].axisValue}</div>`;
+                    params.forEach(param => {
+                        const value = param.seriesName === '收入' ? 
+                            `¥${(param.value / 10000).toFixed(2)}万` : 
+                            `${param.value}笔`;
+                        result += `<div style="margin: 2px 0;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background: ${param.color}; border-radius: 50%; margin-right: 8px;"></span>
+                            ${param.seriesName}: ${value}
+                        </div>`;
+                    });
+                    result += `</div>`;
+                    return result;
+                },
                 axisPointer: {
                     type: 'cross',
                     crossStyle: {
@@ -272,16 +287,17 @@ export class ChartManager {
                 }
             },
             legend: {
-                data: ['收入', '交易量'],
+                data: ['收入'],
                 top: 10,
                 textStyle: {
                     color: '#b8c5d6'
                 }
             },
             grid: {
-                left: '3%',
+                left: '8%',
                 right: '4%',
-                bottom: '3%',
+                bottom: '8%',
+                top: '15%',
                 containLabel: true
             },
             xAxis: [
@@ -295,14 +311,19 @@ export class ChartManager {
                         }
                     },
                     axisLabel: {
-                        color: '#b8c5d6'
+                        color: '#b8c5d6',
+                        fontSize: 12,
+                        rotate: 0
+                    },
+                    axisTick: {
+                        alignWithLabel: true
                     }
                 }
             ],
             yAxis: [
                 {
                     type: 'value',
-                    name: '收入(元)',
+                    name: '收入(万元)',
                     position: 'left',
                     axisLine: {
                         lineStyle: {
@@ -312,25 +333,15 @@ export class ChartManager {
                     axisLabel: {
                         color: '#b8c5d6',
                         formatter: function(value) {
-                            return value >= 10000 ? (value / 10000) + 'w' : value;
+                            return (value / 10000).toFixed(2);
                         }
                     },
                     splitLine: {
                         lineStyle: {
                             color: 'rgba(255, 255, 255, 0.05)'
                         }
-                    }
-                },
-                {
-                    type: 'value',
-                    name: '交易量',
-                    position: 'right',
-                    axisLine: {
-                        lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.2)'
-                        }
                     },
-                    axisLabel: {
+                    nameTextStyle: {
                         color: '#b8c5d6'
                     }
                 }
@@ -355,27 +366,17 @@ export class ChartManager {
                         ])
                     },
                     symbol: 'circle',
-                    symbolSize: 6,
+                    symbolSize: 8,
                     itemStyle: {
                         color: '#667eea',
                         borderColor: '#ffffff',
                         borderWidth: 2
-                    }
-                },
-                {
-                    name: '交易量',
-                    type: 'line',
-                    yAxisIndex: 1,
-                    smooth: true,
-                    data: [],
-                    lineStyle: {
-                        width: 2,
-                        color: '#00d4ff'
                     },
-                    symbol: 'diamond',
-                    symbolSize: 5,
-                    itemStyle: {
-                        color: '#00d4ff'
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(102, 126, 234, 0.8)'
+                        }
                     }
                 }
             ]
@@ -383,6 +384,9 @@ export class ChartManager {
         
         chart.setOption(option);
         this.charts.set('revenueChart', chart);
+        
+        // 默认加载7天数据
+        this.generateMockRevenueData('week');
     }
 
     initDividendChart() {
@@ -528,17 +532,12 @@ export class ChartManager {
         const chart = this.charts.get('revenueChart');
         if (!chart || !revenueData) return;
 
-        const dates = revenueData.map(item => {
-            const date = new Date(item.date);
-            return `${date.getMonth() + 1}/${date.getDate()}`;
-        });
+        const dates = revenueData.map(item => item.date);
         const revenues = revenueData.map(item => item.revenue);
-        const transactions = revenueData.map(item => item.transactions);
 
         const option = chart.getOption();
         option.xAxis[0].data = dates;
         option.series[0].data = revenues;
-        option.series[1].data = transactions;
         
         chart.setOption(option);
     }
@@ -557,8 +556,6 @@ export class ChartManager {
         // 根据时间周期更新图表数据
         console.log(`Updating chart ${chartId} for period ${period}`);
         
-        // 这里可以重新获取对应时间周期的数据
-        // 暂时使用模拟数据
         if (chartId === 'revenueChart') {
             this.generateMockRevenueData(period);
         }
@@ -568,32 +565,63 @@ export class ChartManager {
         const chart = this.charts.get('revenueChart');
         if (!chart) return;
 
-        let days;
+        let dataPoints = [];
+        const now = new Date();
+        
         switch (period) {
-            case '7d': days = 7; break;
-            case '30d': days = 30; break;
-            case '90d': days = 90; break;
-            default: days = 30;
+            case 'week':
+                // 生成7天数据
+                for (let i = 6; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - i);
+                    dataPoints.push({
+                        date: `${date.getMonth() + 1}月${date.getDate()}日`,
+                        revenue: Math.floor(Math.random() * 200000) + 100000 // 10-30万
+                    });
+                }
+                break;
+                
+            case 'month':
+                // 生成30天数据，每3天一个点
+                for (let i = 27; i >= 0; i -= 3) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - i);
+                    dataPoints.push({
+                        date: `${date.getMonth() + 1}/${date.getDate()}`,
+                        revenue: Math.floor(Math.random() * 300000) + 150000 // 15-45万
+                    });
+                }
+                break;
+                
+            case 'year':
+                // 生成12个月数据
+                for (let i = 11; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setMonth(date.getMonth() - i);
+                    const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', 
+                                      '7月', '8月', '9月', '10月', '11月', '12月'];
+                    dataPoints.push({
+                        date: monthNames[date.getMonth()],
+                        revenue: Math.floor(Math.random() * 2000000) + 1000000 // 100-300万
+                    });
+                }
+                break;
+                
+            default:
+                period = 'week';
+                return this.generateMockRevenueData('week');
         }
 
-        const dates = [];
-        const revenues = [];
-        const transactions = [];
-        
-        for (let i = days - 1; i >= 0; i--) {
-            const date = new Date();
-            date.setDate(date.getDate() - i);
-            dates.push(`${date.getMonth() + 1}/${date.getDate()}`);
-            revenues.push(Math.floor(Math.random() * 100000) + 50000);
-            transactions.push(Math.floor(Math.random() * 500) + 200);
-        }
+        const dates = dataPoints.map(item => item.date);
+        const revenues = dataPoints.map(item => item.revenue);
 
         const option = chart.getOption();
         option.xAxis[0].data = dates;
         option.series[0].data = revenues;
-        option.series[1].data = transactions;
         
         chart.setOption(option);
+        
+        console.log(`Updated revenue chart for period: ${period}`, { dates, revenues });
     }
 
     // 响应式处理

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收入趋势图测试</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body {
+            background: #1a1a2e;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .chart-controls {
+            display: flex;
+            gap: 10px;
+        }
+        .control-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .control-btn.active {
+            background: rgba(0, 212, 255, 0.5);
+            border-color: #00d4ff;
+        }
+        .control-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+        #revenueChart {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>收入趋势分析测试</h1>
+    
+    <div class="chart-container">
+        <div class="card-header">
+            <h3>收入趋势分析</h3>
+            <div class="chart-controls">
+                <button class="control-btn active" data-period="week">周</button>
+                <button class="control-btn" data-period="month">月</button>
+                <button class="control-btn" data-period="year">年</button>
+            </div>
+        </div>
+        <div id="revenueChart"></div>
+    </div>
+
+    <script>
+        class ChartManager {
+            constructor() {
+                this.charts = new Map();
+            }
+
+            init() {
+                this.initRevenueChart();
+                this.setupEventListeners();
+            }
+
+            initRevenueChart() {
+                const chartContainer = document.getElementById('revenueChart');
+                if (!chartContainer) return;
+
+                const chart = echarts.init(chartContainer);
+                
+                const option = {
+                    backgroundColor: 'transparent',
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        borderColor: 'rgba(0, 212, 255, 0.5)',
+                        textStyle: {
+                            color: '#ffffff'
+                        },
+                        formatter: function(params) {
+                            let result = `<div style="padding: 8px;">`;
+                            result += `<div style="font-weight: bold; margin-bottom: 4px;">${params[0].axisValue}</div>`;
+                            params.forEach(param => {
+                                const value = `¥${(param.value / 10000).toFixed(2)}万`;
+                                result += `<div style="margin: 2px 0;">
+                                    <span style="display: inline-block; width: 10px; height: 10px; background: ${param.color}; border-radius: 50%; margin-right: 8px;"></span>
+                                    ${param.seriesName}: ${value}
+                                </div>`;
+                            });
+                            result += `</div>`;
+                            return result;
+                        },
+                        axisPointer: {
+                            type: 'cross',
+                            crossStyle: {
+                                color: 'rgba(0, 212, 255, 0.5)'
+                            }
+                        }
+                    },
+                    legend: {
+                        data: ['收入'],
+                        top: 10,
+                        textStyle: {
+                            color: '#b8c5d6'
+                        }
+                    },
+                    grid: {
+                        left: '8%',
+                        right: '4%',
+                        bottom: '8%',
+                        top: '15%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: [],
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.2)'
+                                }
+                            },
+                            axisLabel: {
+                                color: '#b8c5d6',
+                                fontSize: 12,
+                                rotate: 0
+                            },
+                            axisTick: {
+                                alignWithLabel: true
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name: '收入(万元)',
+                            position: 'left',
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.2)'
+                                }
+                            },
+                            axisLabel: {
+                                color: '#b8c5d6',
+                                formatter: function(value) {
+                                    return (value / 10000).toFixed(2);
+                                }
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.05)'
+                                }
+                            },
+                            nameTextStyle: {
+                                color: '#b8c5d6'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '收入',
+                            type: 'line',
+                            smooth: true,
+                            data: [],
+                            lineStyle: {
+                                width: 3,
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                                    { offset: 0, color: '#667eea' },
+                                    { offset: 1, color: '#764ba2' }
+                                ])
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    { offset: 0, color: 'rgba(102, 126, 234, 0.3)' },
+                                    { offset: 1, color: 'rgba(118, 75, 162, 0.1)' }
+                                ])
+                            },
+                            symbol: 'circle',
+                            symbolSize: 8,
+                            itemStyle: {
+                                color: '#667eea',
+                                borderColor: '#ffffff',
+                                borderWidth: 2
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowColor: 'rgba(102, 126, 234, 0.8)'
+                                }
+                            }
+                        }
+                    ]
+                };
+                
+                chart.setOption(option);
+                this.charts.set('revenueChart', chart);
+                
+                // 默认加载7天数据
+                this.generateMockRevenueData('week');
+            }
+
+            generateMockRevenueData(period) {
+                const chart = this.charts.get('revenueChart');
+                if (!chart) return;
+
+                let dataPoints = [];
+                const now = new Date();
+                
+                switch (period) {
+                    case 'week':
+                        // 生成7天数据
+                        for (let i = 6; i >= 0; i--) {
+                            const date = new Date(now);
+                            date.setDate(date.getDate() - i);
+                            dataPoints.push({
+                                date: `${date.getMonth() + 1}月${date.getDate()}日`,
+                                revenue: Math.floor(Math.random() * 200000) + 100000 // 10-30万
+                            });
+                        }
+                        break;
+                        
+                    case 'month':
+                        // 生成30天数据，每3天一个点
+                        for (let i = 27; i >= 0; i -= 3) {
+                            const date = new Date(now);
+                            date.setDate(date.getDate() - i);
+                            dataPoints.push({
+                                date: `${date.getMonth() + 1}/${date.getDate()}`,
+                                revenue: Math.floor(Math.random() * 300000) + 150000 // 15-45万
+                            });
+                        }
+                        break;
+                        
+                    case 'year':
+                        // 生成12个月数据
+                        for (let i = 11; i >= 0; i--) {
+                            const date = new Date(now);
+                            date.setMonth(date.getMonth() - i);
+                            const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', 
+                                              '7月', '8月', '9月', '10月', '11月', '12月'];
+                            dataPoints.push({
+                                date: monthNames[date.getMonth()],
+                                revenue: Math.floor(Math.random() * 2000000) + 1000000 // 100-300万
+                            });
+                        }
+                        break;
+                        
+                    default:
+                        period = 'week';
+                        return this.generateMockRevenueData('week');
+                }
+
+                const dates = dataPoints.map(item => item.date);
+                const revenues = dataPoints.map(item => item.revenue);
+
+                const option = chart.getOption();
+                option.xAxis[0].data = dates;
+                option.series[0].data = revenues;
+                
+                chart.setOption(option);
+                
+                console.log(`Updated revenue chart for period: ${period}`, { dates, revenues });
+            }
+
+            setupEventListeners() {
+                const chartControls = document.querySelectorAll('[data-period]');
+                chartControls.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const container = e.target.closest('.chart-container');
+                        const controls = container.querySelectorAll('[data-period]');
+                        const period = e.target.getAttribute('data-period');
+
+                        controls.forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        
+                        // 更新图表数据
+                        this.generateMockRevenueData(period);
+                    });
+                });
+            }
+
+            handleResize() {
+                this.charts.forEach(chart => {
+                    chart.resize();
+                });
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartManager = new ChartManager();
+            chartManager.init();
+            
+            // 响应式处理
+            window.addEventListener('resize', () => {
+                chartManager.handleResize();
+            });
+        });
+    </script>
+</body>
+</html>

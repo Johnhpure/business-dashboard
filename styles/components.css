@@ -559,6 +559,13 @@
   border-bottom: none;
 }
 
+/* 覆盖分红详情卡片中的summary-item样式 */
+.dividend-details .summary-item,
+.dividend-history .summary-item {
+  border-bottom: none;
+  padding: 0;
+}
+
 .compact-card .summary-item .label {
   font-size: 0.875rem;
   color: var(--text-secondary);
@@ -572,14 +579,18 @@
 }
 
 /* 确保右侧卡片容器与左侧卡片高度一致 */
-.viz-grid .dividend-details {
+.viz-grid .dividend-cards-container {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
+.viz-grid .dividend-details {
+  display: flex;
+  flex-direction: column;
+}
+
 .viz-grid .dividend-history {
-  height: 100%;
   display: flex;
   flex-direction: column;
 }

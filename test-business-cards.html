@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>业务卡片测试</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <main class="dashboard-main">
+            <div class="content-area full-width">
+                <!-- 新增业务数据概览区域 -->
+                <section class="business-overview">
+                    <h2 style="color: var(--text-primary); margin-bottom: var(--spacing-lg);">新增业务数据卡片</h2>
+                    <div class="business-grid">
+                        <div class="kpi-card glass-card" data-kpi="points-issued">
+                            <div class="kpi-icon">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">2,856,780</span>
+                                    <span class="unit">点</span>
+                                </div>
+                                <div class="kpi-label">消费点发放</div>
+                                <div class="kpi-trend positive">
+                                    <span>今日发放：</span>
+                                    <span class="trend-value">125,680</span>
+                                    <span class="trend-unit">点</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card glass-card" data-kpi="voucher-consumed">
+                            <div class="kpi-icon">
+                                <i class="fas fa-ticket-alt"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">1,456,890</span>
+                                    <span class="unit">元</span>
+                                </div>
+                                <div class="kpi-label">抵用券消费</div>
+                                <div class="kpi-trend positive">
+                                    <span>今日消费：</span>
+                                    <span class="trend-value">89,420</span>
+                                    <span class="trend-unit">元</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card glass-card" data-kpi="good-points-consumed">
+                            <div class="kpi-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">987,650</span>
+                                    <span class="unit">点</span>
+                                </div>
+                                <div class="kpi-label">好点消费</div>
+                                <div class="kpi-trend positive">
+                                    <span>今日消费：</span>
+                                    <span class="trend-value">67,890</span>
+                                    <span class="trend-unit">点</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card glass-card" data-kpi="voucher-withdrawal">
+                            <div class="kpi-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value">
+                                    <span class="number">756,430</span>
+                                    <span class="unit">元</span>
+                                </div>
+                                <div class="kpi-label">抵用券提现</div>
+                                <div class="kpi-trend positive">
+                                    <span>今日提现：</span>
+                                    <span class="trend-value">45,230</span>
+                                    <span class="trend-unit">元</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- 动态背景 -->
+    <div class="background-animation">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+</body>
+</html>

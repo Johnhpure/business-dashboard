@@ -4,39 +4,39 @@
   --primary-color: #00d4ff;
   --primary-dark: #0099cc;
   --primary-light: #33ddff;
-  
+
   /* 背景色 */
   --bg-primary: #0a0a0f;
   --bg-secondary: #1a1a2e;
   --bg-tertiary: #16213e;
-  
+
   /* 玻璃效果 */
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  
+
   /* 文字颜色 */
   --text-primary: #ffffff;
   --text-secondary: #b8c5d6;
   --text-muted: #6b7280;
-  
+
   /* 功能色彩 */
   --success-color: #10b981;
   --warning-color: #f59e0b;
   --error-color: #ef4444;
   --info-color: #3b82f6;
-  
+
   /* 渐变色 */
   --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
   --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   --gradient-error: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  
+
   /* 动画时长 */
   --transition-fast: 0.2s;
   --transition-normal: 0.3s;
   --transition-slow: 0.5s;
-  
+
   /* 间距 */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -44,13 +44,13 @@
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
-  
+
   /* 圆角 */
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
-  
+
   /* 字体 */
   --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   --font-mono: 'SF Mono', 'Monaco', 'Consolas', monospace;
@@ -129,10 +129,13 @@ body {
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) scale(1);
     opacity: 0.6;
   }
+
   50% {
     transform: translateY(-20px) scale(1.1);
     opacity: 1;
@@ -199,9 +202,11 @@ body {
   0% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
   }
+
   70% {
     box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
   }
@@ -553,6 +558,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  overflow: hidden;
+  margin-left: -10px;
+  padding-left: calc(var(--spacing-xs) + 10px);
 }
 
 .progress-text {
@@ -561,6 +569,22 @@ body {
   white-space: nowrap;
   line-height: 1.4;
   text-align: left;
+  transform: translateX(-10px);
+  animation: slideText 8s linear infinite;
+}
+
+@keyframes slideText {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-20px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .progress-text span {
@@ -585,6 +609,54 @@ body {
   font-weight: 600;
 }
 
+/* 业务数据概览区域 */
+.business-overview {
+  margin-bottom: var(--spacing-xl);
+}
+
+.business-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+/* 为新的业务卡片添加特定的颜色主题 */
+.kpi-card[data-kpi="points-issued"]::before {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.kpi-card[data-kpi="points-issued"] .kpi-icon {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+}
+
+.kpi-card[data-kpi="voucher-consumed"]::before {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.kpi-card[data-kpi="voucher-consumed"] .kpi-icon {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning-color);
+}
+
+.kpi-card[data-kpi="good-points-consumed"]::before {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+}
+
+.kpi-card[data-kpi="good-points-consumed"] .kpi-icon {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
+}
+
+.kpi-card[data-kpi="voucher-withdrawal"]::before {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.kpi-card[data-kpi="voucher-withdrawal"] .kpi-icon {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error-color);
+}
+
 /* 可视化区域 */
 .visualization-section {
   margin-bottom: var(--spacing-xl);
@@ -594,17 +666,10 @@ body {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: var(--spacing-lg);
-  align-items: start;
+  align-items: stretch;
 }
 
 /* 右侧分红卡片容器 */
-.viz-grid > .dividend-details:first-of-type,
-.viz-grid > .dividend-history {
-  display: flex;
-  flex-direction: column;
-}
-
-/* 右侧卡片区域容器 */
 .dividend-cards-container {
   display: flex;
   flex-direction: column;
@@ -612,16 +677,32 @@ body {
   height: 100%;
 }
 
+/* 确保分红卡片在容器内正确排列 - 高度保持一致 */
+.dividend-cards-container .dividend-details {
+  flex: 1;
+  /* 平分可用空间 */
+}
+
+.dividend-cards-container .dividend-history {
+  flex: 1;
+  /* 平分可用空间 */
+}
+
 .map-container {
-  padding: var(--spacing-lg);
-  min-height: 500px; /* 调整卡片高度 */
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  height: calc(500px + var(--spacing-sm));
+  /* 高度与右侧两个分红卡片总高度一致 (500px + gap) */
 }
 
 /* 全国业绩流水概览布局 */
 .national-overview-content {
   display: flex;
-  gap: var(--spacing-lg);
-  height: 500px; /* 调整内容区域高度 */
+  gap: var(--spacing-md);
+  flex: 1;
+  min-height: calc(420px + var(--spacing-sm));
+  /* 确保有足够高度显示饼图，与容器高度增加保持一致 */
 }
 
 .provinces-list {
@@ -659,10 +740,10 @@ body {
   bottom: 0;
   width: 1px;
   background: linear-gradient(to bottom,
-    transparent 0%,
-    var(--glass-border) 10%,
-    var(--glass-border) 90%,
-    transparent 100%);
+      transparent 0%,
+      var(--glass-border) 10%,
+      var(--glass-border) 90%,
+      transparent 100%);
   transform: translateX(-50%);
   z-index: 1;
 }
@@ -724,6 +805,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: calc(380px + var(--spacing-sm));
+}
+
+.map-chart {
+  width: 100%;
+  height: 100%;
+  min-height: calc(380px + var(--spacing-sm));
 }
 
 .dividend-progress {
@@ -846,14 +934,14 @@ body {
 
 /* 当前分红轮次详情 */
 .dividend-details {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   display: flex;
   flex-direction: column;
 }
 
 /* 分红历史记录 */
 .dividend-history {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   display: flex;
   flex-direction: column;
 }
@@ -868,8 +956,23 @@ body {
 .dividend-details-content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   flex: 1;
+}
+
+/* 确保两个分红卡片的内容样式一致 */
+.dividend-details .dividend-summary,
+.dividend-history .dividend-summary {
+  gap: var(--spacing-sm);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.dividend-details .summary-item,
+.dividend-history .summary-item {
+  padding: var(--spacing-xs) 0;
 }
 
 .round-info {
@@ -1008,32 +1111,33 @@ body {
 
 /* 响应式设计 */
 @media (max-width: 1200px) {
+
   .viz-grid,
   .charts-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .ranking-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .national-overview-content {
     flex-direction: column;
     height: auto;
   }
-  
+
   .provinces-list {
     width: 100%;
     max-height: 150px;
   }
-  
+
   .provinces-grid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     max-height: 120px;
   }
-  
+
   .overview-chart {
-    height: 300px;
+    height: calc(300px + var(--spacing-sm));
   }
 }
 
@@ -1041,90 +1145,285 @@ body {
   .dashboard-main {
     flex-direction: column;
   }
-  
-  .kpi-grid {
+
+  .kpi-grid,
+  .business-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .dashboard-header {
     flex-direction: column;
     height: auto;
     gap: var(--spacing-md);
     padding: var(--spacing-md);
   }
-  
+
   .header-left,
   .header-right {
     width: 100%;
     justify-content: space-between;
   }
-  
+
   .header-center {
     width: 100%;
     flex-direction: column;
     gap: var(--spacing-md);
   }
-  
+
   .region-filter-header {
     flex-direction: column;
     gap: var(--spacing-sm);
     width: 100%;
   }
-  
+
   .region-filter-header select {
     width: 100%;
   }
-  
+
 
   .round-display-header {
     width: 100%;
     justify-content: center;
   }
-  
+
   .round-info-card {
     flex-direction: column;
     gap: var(--spacing-sm);
     text-align: center;
   }
-  
+
   .round-label {
     margin-bottom: var(--spacing-xs);
   }
-  
+
   .glass-range-header {
     flex: 1;
     margin: 0 var(--spacing-sm);
   }
-  
+
   .national-overview-content {
     flex-direction: column;
     height: auto;
   }
-  
+
   .provinces-list {
     width: 100%;
     max-height: 120px;
   }
-  
+
   .provinces-grid {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     max-height: 100px;
   }
-  
+
   .province-item {
     font-size: 0.7rem;
     padding: 2px 4px;
   }
-  
+
   .province-value {
     font-size: 0.65rem;
   }
-  
+
   .overview-chart {
-    height: 250px;
+    height: calc(250px + var(--spacing-sm));
   }
-  
+
   .map-container {
-    min-height: 350px;
+    min-height: calc(350px + var(--spacing-sm));
+  }
+}
+
+/* 分红详情卡片样式 */
+.dividend-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  height: 500px;
+  /* 与map-container保持一致 */
+}
+
+.dividend-details,
+.dividend-history {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dividend-details-content,
+.dividend-history-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dividend-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  flex: 1;
+  justify-content: space-between;
+}
+
+.dividend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal) ease;
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+}
+
+.dividend-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(0, 212, 255, 0.05) 100%);
+  opacity: 0;
+  transition: opacity var(--transition-normal) ease;
+}
+
+.dividend-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 212, 255, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.15);
+}
+
+.dividend-item:hover::before {
+  opacity: 1;
+}
+
+.dividend-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: white;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.store-icon {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.user-icon {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.partner-icon {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.business-icon {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.total-icon {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.dividend-info {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.dividend-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.dividend-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  line-height: 1.2;
+}
+
+.dividend-value.highlight {
+  color: var(--primary-color);
+  font-size: 1.25rem;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.total-item {
+  border: 2px solid rgba(0, 212, 255, 0.2);
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.total-item:hover {
+  border-color: rgba(0, 212, 255, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.25);
+}
+
+/* 分红卡片头部样式优化 */
+.dividend-details .card-header,
+.dividend-history .card-header {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.dividend-details .card-header h3,
+.dividend-history .card-header h3 {
+  font-size: 0.9rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.dividend-details .card-header i,
+.dividend-history .card-header i {
+  font-size: 0.875rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .dividend-item {
+    padding: var(--spacing-xs);
+    gap: var(--spacing-xs);
+  }
+
+  .dividend-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.875rem;
+  }
+
+  .dividend-value {
+    font-size: 1rem;
+  }
+
+  .dividend-value.highlight {
+    font-size: 1.125rem;
+  }
+
+  .dividend-cards-container {
+    gap: var(--spacing-xs);
   }
 }

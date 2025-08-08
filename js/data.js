@@ -486,26 +486,73 @@ export class DataManager {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    generateRevenueChartData(data) {
+    generateRevenueChartData(data, period = 'week') {
         // 生成收入趋势数据
-        const days = 30;
         const result = [];
         const now = new Date();
         
-        for (let i = days - 1; i >= 0; i--) {
-            const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-            const dayTransactions = data.transactions.filter(tx => {
-                const txDate = new Date(tx.timestamp);
-                return txDate.toDateString() === date.toDateString();
-            });
-            
-            const dayRevenue = dayTransactions.reduce((sum, tx) => sum + tx.amount, 0);
-            
-            result.push({
-                date: date.toISOString().split('T')[0],
-                revenue: dayRevenue,
-                transactions: dayTransactions.length
-            });
+        switch (period) {
+            case 'week':
+                // 生成7天数据
+                for (let i = 6; i >= 0; i--) {
+                    const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+                    const dayTransactions = data.transactions.filter(tx => {
+                        const txDate = new Date(tx.timestamp);
+                        return txDate.toDateString() === date.toDateString();
+                    });
+                    
+                    const dayRevenue = dayTransactions.reduce((sum, tx) => sum + tx.amount, 0) || 
+                                     (Math.floor(Math.random() * 200000) + 100000);
+                    
+                    result.push({
+                        date: `${date.getMonth() + 1}月${date.getDate()}日`,
+                        revenue: dayRevenue,
+                        transactions: dayTransactions.length
+                    });
+                }
+                break;
+                
+            case 'month':
+                // 生成30天数据，每3天一个点
+                for (let i = 27; i >= 0; i -= 3) {
+                    const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+                    const periodTransactions = data.transactions.filter(tx => {
+                        const txDate = new Date(tx.timestamp);
+                        return Math.abs(txDate.getTime() - date.getTime()) <= 3 * 24 * 60 * 60 * 1000;
+                    });
+                    
+                    const periodRevenue = periodTransactions.reduce((sum, tx) => sum + tx.amount, 0) || 
+                                        (Math.floor(Math.random() * 300000) + 150000);
+                    
+                    result.push({
+                        date: `${date.getMonth() + 1}/${date.getDate()}`,
+                        revenue: periodRevenue,
+                        transactions: periodTransactions.length
+                    });
+                }
+                break;
+                
+            case 'year':
+                // 生成12个月数据
+                for (let i = 11; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setMonth(date.getMonth() - i);
+                    const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', 
+                                      '7月', '8月', '9月', '10月', '11月', '12月'];
+                    
+                    // 模拟月度收入数据
+                    const monthRevenue = Math.floor(Math.random() * 2000000) + 1000000;
+                    
+                    result.push({
+                        date: monthNames[date.getMonth()],
+                        revenue: monthRevenue,
+                        transactions: Math.floor(monthRevenue / 200) // 估算交易数量
+                    });
+                }
+                break;
+                
+            default:
+                return this.generateRevenueChartData(data, 'week');
         }
         
         return result;
