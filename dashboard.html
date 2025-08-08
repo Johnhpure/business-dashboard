@@ -276,22 +276,24 @@
                                 </div>
                                 <div class="dividend-details-content">
                                     <div class="dividend-grid">
-                                        <div class="dividend-item">
-                                            <div class="dividend-icon store-icon">
-                                                <i class="fas fa-store"></i>
+                                        <div class="dividend-row">
+                                            <div class="dividend-item">
+                                                <div class="dividend-icon store-icon">
+                                                    <i class="fas fa-store"></i>
+                                                </div>
+                                                <div class="dividend-info">
+                                                    <div class="dividend-label">商户分红</div>
+                                                    <div class="dividend-value">¥136,000</div>
+                                                </div>
                                             </div>
-                                            <div class="dividend-info">
-                                                <div class="dividend-label">商户分红</div>
-                                                <div class="dividend-value">¥136,000</div>
-                                            </div>
-                                        </div>
-                                        <div class="dividend-item">
-                                            <div class="dividend-icon user-icon">
-                                                <i class="fas fa-users"></i>
-                                            </div>
-                                            <div class="dividend-info">
-                                                <div class="dividend-label">用户分红</div>
-                                                <div class="dividend-value">¥102,000</div>
+                                            <div class="dividend-item">
+                                                <div class="dividend-icon user-icon">
+                                                    <i class="fas fa-users"></i>
+                                                </div>
+                                                <div class="dividend-info">
+                                                    <div class="dividend-label">用户分红</div>
+                                                    <div class="dividend-value">¥102,000</div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="dividend-item total-item">
@@ -301,6 +303,15 @@
                                             <div class="dividend-info">
                                                 <div class="dividend-label">预估总额</div>
                                                 <div class="dividend-value highlight">¥680,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="dividend-item countdown-item">
+                                            <div class="dividend-icon countdown-icon">
+                                                <i class="fas fa-clock"></i>
+                                            </div>
+                                            <div class="dividend-info">
+                                                <div class="dividend-label">距下轮分红倒计时</div>
+                                                <div class="dividend-value countdown">24h</div>
                                             </div>
                                         </div>
                                     </div>
@@ -314,22 +325,24 @@
                                 </div>
                                 <div class="dividend-history-content">
                                     <div class="dividend-grid">
-                                        <div class="dividend-item">
-                                            <div class="dividend-icon partner-icon">
-                                                <i class="fas fa-handshake"></i>
+                                        <div class="dividend-row">
+                                            <div class="dividend-item">
+                                                <div class="dividend-icon partner-icon">
+                                                    <i class="fas fa-handshake"></i>
+                                                </div>
+                                                <div class="dividend-info">
+                                                    <div class="dividend-label">合伙人分红</div>
+                                                    <div class="dividend-value">¥272,000</div>
+                                                </div>
                                             </div>
-                                            <div class="dividend-info">
-                                                <div class="dividend-label">合伙人分红</div>
-                                                <div class="dividend-value">¥272,000</div>
-                                            </div>
-                                        </div>
-                                        <div class="dividend-item">
-                                            <div class="dividend-icon business-icon">
-                                                <i class="fas fa-user-tie"></i>
-                                            </div>
-                                            <div class="dividend-info">
-                                                <div class="dividend-label">商务分红</div>
-                                                <div class="dividend-value">¥170,000</div>
+                                            <div class="dividend-item">
+                                                <div class="dividend-icon business-icon">
+                                                    <i class="fas fa-user-tie"></i>
+                                                </div>
+                                                <div class="dividend-info">
+                                                    <div class="dividend-label">商务分红</div>
+                                                    <div class="dividend-value">¥170,000</div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="dividend-item total-item">
@@ -339,6 +352,15 @@
                                             <div class="dividend-info">
                                                 <div class="dividend-label">预估总额</div>
                                                 <div class="dividend-value highlight">¥650,000</div>
+                                            </div>
+                                        </div>
+                                        <div class="dividend-item countdown-item">
+                                            <div class="dividend-icon countdown-icon">
+                                                <i class="fas fa-clock"></i>
+                                            </div>
+                                            <div class="dividend-info">
+                                                <div class="dividend-label">距下轮分红倒计时</div>
+                                                <div class="dividend-value countdown">24h</div>
                                             </div>
                                         </div>
                                     </div>
@@ -364,6 +386,19 @@
                             <div class="chart" id="revenueChart"></div>
                         </div>
 
+                        <div class="chart-container glass-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-coins"></i> 分红轮次趋势分析</h3>
+                            </div>
+                            <div class="chart" id="dividendRoundChart"></div>
+                        </div>
+
+                        <div class="chart-container glass-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-history"></i> 分红次数趋势分析</h3>
+                            </div>
+                            <div class="chart" id="dividendCountChart"></div>
+                        </div>
 
                     </div>
                 </section>
@@ -401,6 +436,23 @@
                                 </div>
                             </div>
                             <div class="ranking-list" id="businessRanking">
+                                <!-- 排行榜内容将通过JavaScript动态生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 用户消费排行榜 -->
+                        <div class="ranking-card glass-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-shopping-cart"></i> 用户消费排行榜</h3>
+                                <div class="ranking-controls">
+                                    <select class="glass-select small" id="userConsumptionPeriod">
+                                        <option value="day" selected>本日</option>
+                                        <option value="month">本月</option>
+                                        <option value="year">本年</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ranking-list" id="userConsumptionRanking">
                                 <!-- 排行榜内容将通过JavaScript动态生成 -->
                             </div>
                         </div>
@@ -455,6 +507,18 @@
                             { name: '周涛', region: '河南省', count: 95, amount: 0, change: 11.2 },
                             { name: '吴华', region: '湖北省', count: 89, amount: 0, change: 8.9 },
                             { name: '郑磊', region: '福建省', count: 82, amount: 0, change: 13.4 }
+                        ],
+                        userConsumption: [
+                            { name: '王小明', region: '四川省-成都市', amount: 2580 },
+                            { name: '李小红', region: '广东省-深圳市', amount: 2340 },
+                            { name: '张小华', region: '北京市-朝阳区', amount: 2180 },
+                            { name: '刘小丽', region: '上海市-浦东新区', amount: 1950 },
+                            { name: '陈小军', region: '浙江省-杭州市', amount: 1820 },
+                            { name: '赵小敏', region: '江苏省-南京市', amount: 1680 },
+                            { name: '孙小强', region: '山东省-青岛市', amount: 1540 },
+                            { name: '周小芳', region: '河南省-郑州市', amount: 1420 },
+                            { name: '吴小涛', region: '湖北省-武汉市', amount: 1320 },
+                            { name: '郑小磊', region: '福建省-厦门市', amount: 1180 }
                         ],
                         stores: [
                             { name: '老王餐厅', location: '四川省-成都市', stores: 1, amount: 125000, change: 25.6 },
@@ -526,6 +590,8 @@
             init() {
                 this.initChinaMap();
                 this.initRevenueChart();
+                this.initDividendRoundChart();
+                this.initDividendCountChart();
             }
 
             initChinaMap() {
@@ -733,7 +799,13 @@
                     yAxis: {
                         type: 'value',
                         axisLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.2)' } },
-                        axisLabel: { color: '#b8c5d6' },
+                        axisLabel: { 
+                            color: '#b8c5d6',
+                            formatter: function(value) {
+                                const result = (value / 10000).toFixed(2);
+                                return result === '0.00' ? '¥0' : '¥' + result + 'w';
+                            }
+                        },
                         splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.05)' } }
                     },
                     series: [{
@@ -753,12 +825,180 @@
                         },
                         symbol: 'circle',
                         symbolSize: 6,
-                        itemStyle: { color: '#667eea', borderColor: '#ffffff', borderWidth: 2 }
+                        itemStyle: { color: '#667eea', borderColor: '#ffffff', borderWidth: 2 },
+                        label: {
+                            show: true,
+                            position: 'top',
+                            color: '#b8c5d6',
+                            fontSize: 12,
+                            formatter: function(params) {
+                                const result = (params.value / 10000).toFixed(2);
+                                return result === '0.00' ? '¥0' : '¥' + result + 'w';
+                            }
+                        }
                     }]
                 };
 
                 chart.setOption(option);
                 this.charts.set('revenueChart', chart);
+            }
+
+            initDividendRoundChart() {
+                const chartContainer = document.getElementById('dividendRoundChart');
+                if (!chartContainer || !window.echarts) return;
+
+                const chart = echarts.init(chartContainer);
+                const rounds = [];
+                const amounts = [];
+                for (let i = 16; i <= 25; i++) {
+                    rounds.push(`第${i}轮`);
+                    amounts.push(Math.floor(Math.random() * 200000) + 500000);
+                }
+
+                const option = {
+                    backgroundColor: 'transparent',
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        borderColor: 'rgba(0, 212, 255, 0.5)',
+                        textStyle: { color: '#ffffff' },
+                        formatter: function(params) {
+                            return `${params[0].name}<br/>分红金额: ¥${params[0].value.toLocaleString()}`;
+                        }
+                    },
+                    grid: {
+                        left: '3%', right: '4%', bottom: '3%', containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: rounds,
+                        axisLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.2)' } },
+                        axisLabel: { color: '#b8c5d6', rotate: 45 }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.2)' } },
+                        axisLabel: { 
+                            color: '#b8c5d6',
+                            formatter: function(value) {
+                                const result = (value / 10000).toFixed(2);
+                                return result === '0.00' ? '¥0' : '¥' + result + 'w';
+                            }
+                        },
+                        splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.05)' } }
+                    },
+                    series: [{
+                        name: '分红金额',
+                        type: 'line',
+                        smooth: true,
+                        data: amounts,
+                        lineStyle: { width: 3, color: '#f093fb' },
+                        areaStyle: {
+                            color: {
+                                type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+                                colorStops: [
+                                    { offset: 0, color: 'rgba(240, 147, 251, 0.3)' },
+                                    { offset: 1, color: 'rgba(245, 87, 108, 0.1)' }
+                                ]
+                            }
+                        },
+                        symbol: 'circle',
+                        symbolSize: 6,
+                        itemStyle: { color: '#f093fb', borderColor: '#ffffff', borderWidth: 2 },
+                        label: {
+                            show: true,
+                            position: 'top',
+                            color: '#b8c5d6',
+                            fontSize: 11,
+                            formatter: function(params) {
+                                const result = (params.value / 10000).toFixed(2);
+                                return result === '0.00' ? '¥0' : '¥' + result + 'w';
+                            }
+                        }
+                    }]
+                };
+
+                chart.setOption(option);
+                this.charts.set('dividendRoundChart', chart);
+            }
+
+            initDividendCountChart() {
+                const chartContainer = document.getElementById('dividendCountChart');
+                if (!chartContainer || !window.echarts) return;
+
+                const chart = echarts.init(chartContainer);
+                const counts = [];
+                const amounts = [];
+                for (let i = 15; i <= 24; i++) {
+                    counts.push(`第${i}次`);
+                    amounts.push(Math.floor(Math.random() * 150000) + 450000);
+                }
+
+                const option = {
+                    backgroundColor: 'transparent',
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        borderColor: 'rgba(0, 212, 255, 0.5)',
+                        textStyle: { color: '#ffffff' },
+                        formatter: function(params) {
+                            return `${params[0].name}<br/>分红金额: ¥${params[0].value.toLocaleString()}`;
+                        }
+                    },
+                    grid: {
+                        left: '3%', right: '4%', bottom: '3%', containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: counts,
+                        axisLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.2)' } },
+                        axisLabel: { color: '#b8c5d6', rotate: 45 }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.2)' } },
+                        axisLabel: { 
+                            color: '#b8c5d6',
+                            formatter: function(value) {
+                                const result = (value / 10000).toFixed(2);
+                                return result === '0.00' ? '¥0' : '¥' + result + 'w';
+                            }
+                        },
+                        splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.05)' } }
+                    },
+                    series: [{
+                        name: '分红金额',
+                        type: 'line',
+                        smooth: true,
+                        data: amounts,
+                        lineStyle: { width: 3, color: '#43e97b' },
+                        areaStyle: {
+                            color: {
+                                type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+                                colorStops: [
+                                    { offset: 0, color: 'rgba(67, 233, 123, 0.3)' },
+                                    { offset: 1, color: 'rgba(56, 249, 215, 0.1)' }
+                                ]
+                            }
+                        },
+                        symbol: 'circle',
+                        symbolSize: 6,
+                        itemStyle: { color: '#43e97b', borderColor: '#ffffff', borderWidth: 2 },
+                        label: {
+                            show: true,
+                            position: 'top',
+                            color: '#b8c5d6',
+                            fontSize: 11,
+                            formatter: function(params) {
+                                const result = (params.value / 10000).toFixed(2);
+                                return result === '0.00' ? '¥0' : '¥' + result + 'w';
+                            }
+                        }
+                    }]
+                };
+
+                chart.setOption(option);
+                this.charts.set('dividendCountChart', chart);
             }
 
         }
@@ -905,6 +1145,7 @@
             updateRankings(rankings) {
                 this.updateRankingList('storeRanking', rankings.stores);
                 this.updateRankingList('businessRanking', rankings.business);
+                this.updateUserConsumptionRanking(rankings.userConsumption);
             }
 
             updateRankingList(containerId, data) {
@@ -951,6 +1192,36 @@
                             </div>
                         `;
                     }
+
+                    container.appendChild(rankingItem);
+                });
+            }
+
+            updateUserConsumptionRanking(userConsumptionData) {
+                const container = document.getElementById('userConsumptionRanking');
+                
+                if (!container || !userConsumptionData) return;
+
+                container.innerHTML = '';
+
+                userConsumptionData.forEach((item, index) => {
+                    const rankingItem = document.createElement('div');
+                    rankingItem.className = 'ranking-item';
+
+                    const rankClass = index < 3 ? `top-${index + 1}` : 'other';
+
+                    rankingItem.innerHTML = `
+                        <div class="ranking-number ${rankClass}">${index + 1}</div>
+                        <div class="ranking-info">
+                            <div class="ranking-name">${item.name}</div>
+                            <div class="ranking-details">
+                                <span>${item.region}</span>
+                            </div>
+                        </div>
+                        <div class="ranking-value">
+                            <div class="ranking-amount">¥${item.amount.toLocaleString()}</div>
+                        </div>
+                    `;
 
                     container.appendChild(rankingItem);
                 });
@@ -1012,7 +1283,6 @@
                         this.loadData();
                     });
                 }
-
 
                 // 分红轮次展示（无需交互事件）
 
