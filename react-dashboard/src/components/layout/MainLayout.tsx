@@ -1,29 +1,32 @@
-import React from 'react';
-import { Header } from './Header';
-import { BackgroundAnimation } from '../common/BackgroundAnimation';
+import BackgroundAnimation from '../common/BackgroundAnimation'
+import Header from './Header'
 
 interface MainLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
+  className?: string
 }
 
-export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+/**
+ * 主布局组件
+ * 完全匹配HTML版本的整体布局结构
+ */
+const MainLayout: React.FC<MainLayoutProps> = ({ children, className = '' }) => {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 relative overflow-hidden">
+    <div className={`dashboard-container ${className}`}>
       {/* 动态背景 */}
       <BackgroundAnimation />
       
-      {/* 主容器 */}
-      <div className="relative z-10 flex flex-col min-h-screen">
-        {/* 顶部导航栏 */}
-        <Header />
-        
-        {/* 主内容区域 */}
-        <main className="flex-1 p-4 pt-6">
-          <div className="flex flex-col gap-6">
-            {children}
-          </div>
-        </main>
-      </div>
+      {/* 顶部导航栏 */}
+      <Header />
+      
+      {/* 主内容区域 */}
+      <main className="dashboard-main">
+        <div className="content-area full-width">
+          {children}
+        </div>
+      </main>
     </div>
-  );
-};
+  )
+}
+
+export default MainLayout

@@ -1,77 +1,143 @@
-import React from 'react';
-import { KPICard } from './KPICard';
+import KPICard from './KPICard'
+import { useKpiData } from '@/hooks/useKpiData'
 
-import { useDashboardStore } from '../../stores/dashboardStore';
-import { TrendingUp, Store, Users, Coins, Briefcase } from 'lucide-react';
+interface KPIGridProps {
+  className?: string
+}
 
-export const KPIGrid: React.FC = () => {
-  const { data, loading } = useDashboardStore();
+/**
+ * KPI网格组件
+ * 包含主要KPI概览和业务数据概览两个部分
+ */
+const KPIGrid: React.FC<KPIGridProps> = ({ className = '' }) => {
+  const { data, isLoading, isError } = useKpiData()
 
-  if (!data) return null;
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
 
-  const kpiItems = [
-    {
-      id: 'revenue',
-      title: '总交易金额',
-      value: data.overview.revenue.value,
-      unit: '元',
-      trend: data.overview.revenue.trend,
-      icon: TrendingUp,
-      color: 'from-blue-500 to-purple-600'
-    },
-    {
-      id: 'stores',
-      title: '活跃商户',
-      value: data.overview.stores.value,
-      unit: '家',
-      trend: data.overview.stores.trend,
-      icon: Store,
-      color: 'from-green-500 to-emerald-600'
-    },
-    {
-      id: 'users',
-      title: '活跃用户',
-      value: data.overview.users.value,
-      unit: '人',
-      trend: data.overview.users.trend,
-      icon: Users,
-      color: 'from-orange-500 to-yellow-600'
-    },
-    {
-      id: 'business',
-      title: '认证商务',
-      value: data.overview.business.value,
-      unit: '人',
-      trend: data.overview.business.trend,
-      icon: Briefcase,
-      color: 'from-purple-500 to-indigo-600'
-    },
-    {
-      id: 'dividend',
-      title: '分红池余额',
-      value: data.overview.dividend.value,
-      unit: '元',
-      trend: data.overview.dividend.trend,
-      icon: Coins,
-      color: 'from-red-500 to-pink-600',
-      showProgress: true,
-      progress: data.dividend.progress
-    }
-  ];
+  if (isError) {
+    return <div>Error fetching data</div>
+  }
+
+  if (!data) {
+    return <div>No data available</div>
+  }
+
+  // The data from the hook is the flat Statistics object.
+  // We need to adapt it to the structure expected by KPICard.
+  // For now, we'll use the direct values and create dummy "todayNew" values.
+  // In a real scenario, the API should provide this data.
+  const kpiData = {
+    revenue: { value: data.totalRevenue, todayNew: { value: data.revenueGrowth, unit: '%' } },
+    stores: { value: data.totalStores, todayNew: { value: data.storeGrowth, unit: '%' } },
+    users: { value: data.totalUsers, todayNew: { value: data.userGrowth, unit: '%' } },
+    business: { value: data.totalBusinesses, todayNew: { value: data.businessGrowth, unit: '%' } },
+    dividend: { value: 0, todayNew: { value: 0, unit: '元' } }, // Placeholder
+  }
+
+  const businessData = {
+    pointsIssued: { value: 0, todayNew: { value: 0, unit: '点' } }, // Placeholder
+    voucherConsumed: { value: 0, todayNew: { value: 0, unit: '元' } }, // Placeholder
+    goodPointsConsumed: { value: 0, todayNew: { value: 0, unit: '点' } }, // Placeholder
+    voucherWithdrawal: { value: 0, todayNew: { value: 0, unit: '元' } }, // Placeholder
+  }
+
 
   return (
-    <section className="space-y-6">
-      {/* KPI卡片网格 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        {kpiItems.map((item, index) => (
+    <div className={className}>
+      {/* KPI概览区域 */}
+      <section className="kpi-overview">
+        <div className="kpi-grid">
           <KPICard
-            key={item.id}
-            {...item}
-            loading={loading}
-            delay={index * 100}
+            kpiType="revenue"
+            icon="fas fa-chart-line"
+            label="总交易金额"
+            value={kpiData.revenue.value}
+            unit="元"
+            todayNew={kpiData.revenue.todayNew}
           />
-        ))}
-      </div>
-    </section>
-  );
-};
+          
+          <KPICard
+            kpiType="stores"
+            icon="fas fa-store"
+            label="活跃商户"
+            value={kpiData.stores.value}
+            unit="家"
+            todayNew={kpiData.stores.todayNew}
+          />
+          
+          <KPICard
+            kpiType="users"
+            icon="fas fa-user-friends"
+            label="活跃用户"
+            value={kpiData.users.value}
+            unit="人"
+            todayNew={kpiData.users.todayNew}
+          />
+          
+          <KPICard
+            kpiType="business"
+            icon="fas fa-user-tie"
+            label="认证商务"
+            value={kpiData.business.value}
+            unit="人"
+            todayNew={kpiData.business.todayNew}
+          />
+          
+          <KPICard
+            kpiType="dividend"
+            icon="fas fa-coins"
+            label="当前分红池总金额"
+            value={kpiData.dividend.value}
+            unit="元"
+            progress={73}
+          />
+        </div>
+      </section>
+
+      {/* 业务数据概览区域 */}
+      <section className="business-overview">
+        <div className="business-grid">
+          <KPICard
+            kpiType="points-issued"
+            icon="fas fa-gift"
+            label="消费点发放"
+            value={businessData.pointsIssued.value}
+            unit="点"
+            todayNew={businessData.pointsIssued.todayNew}
+          />
+          
+          <KPICard
+            kpiType="voucher-consumed"
+            icon="fas fa-ticket-alt"
+            label="抵用券消费"
+            value={businessData.voucherConsumed.value}
+            unit="元"
+            todayNew={businessData.voucherConsumed.todayNew}
+          />
+          
+          <KPICard
+            kpiType="good-points-consumed"
+            icon="fas fa-star"
+            label="好点消费"
+            value={businessData.goodPointsConsumed.value}
+            unit="点"
+            todayNew={businessData.goodPointsConsumed.todayNew}
+          />
+          
+          <KPICard
+            kpiType="voucher-withdrawal"
+            icon="fas fa-money-bill-wave"
+            label="抵用券提现"
+            value={businessData.voucherWithdrawal.value}
+            unit="元"
+            todayNew={businessData.voucherWithdrawal.todayNew}
+          />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+export default KPIGrid
